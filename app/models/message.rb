@@ -3,4 +3,8 @@ class Message < ActiveRecord::Base
   has_many :likes, as: :likeable
 
   validates :content, length: {maximum: 140}
+
+  def like!(user)
+    self.likes.create(user: user)
+  end
 end

@@ -11,6 +11,11 @@ class Api::V1::MessagesController < Api::V1::BaseController
     render json: @message
   end
 
+  def like
+    @message.like!
+    render json: @message
+  end
+
   private
 
   def message_params
