@@ -6,4 +6,5 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :messages, dependent: :destroy
+  has_many :likes, dependent: :destroy
 end
