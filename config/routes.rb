@@ -1,7 +1,9 @@
 Rails.application.routes.draw do
   namespace :api do
     namespace :v1 do
-      resources :messages
+      resources :messages do
+        patch :like, on: :member
+      end
     end
   end
   scope :api do
