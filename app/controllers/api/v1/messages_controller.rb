@@ -1,5 +1,5 @@
 class Api::V1::MessagesController < Api::V1::BaseController
-  before_action :authenticate_user!, only: [:create]
+  before_action :authenticate_user!, only: [:create, :like]
 
   def index
     @messages = Message.all
@@ -12,7 +12,7 @@ class Api::V1::MessagesController < Api::V1::BaseController
   end
 
   def like
-    @message.like!
+    @message.like!(current_user)
     render json: @message
   end
 
