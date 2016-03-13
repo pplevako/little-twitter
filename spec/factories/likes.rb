@@ -1,6 +1,6 @@
 FactoryGirl.define do
   factory :like do
     likeable nil
-    user nil
+    user
   end
 end

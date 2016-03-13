@@ -6,7 +6,6 @@ class User < ActiveRecord::Base
   include DeviseTokenAuth::Concerns::User
 
   has_many :messages, dependent: :destroy
-  has_many :likes, dependent: :destroy
 
   def self.top_by_messages_count(time_interval='all', limit=5)
     users = User.select('users.*, COUNT(messages.id) AS messages_count')
