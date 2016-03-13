@@ -36,6 +36,8 @@ gem 'devise'
 gem 'devise_token_auth' # Token based authentication for Rails JSON APIs
 gem 'omniauth' # required for devise_token_auth
 gem 'bootstrap-sass'
+gem 'bootstrap_form'
+gem 'rails-i18n'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

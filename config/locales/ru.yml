@@ -1,0 +1,18 @@
+ru:
+  activerecord:
+    models:
+      user:
+        one: Пользователь
+        many: Пользователи
+      message:
+        one: Сообщение
+        many: Сообщения
+
+  statistics:
+    show:
+      table_caption: Топ-5 пользователей, которые написали больше всех сообщений
+      update: Обновить
+      show_for_interval: Показать за
+      all_time: всё время
+      day: день
+      week: неделю
