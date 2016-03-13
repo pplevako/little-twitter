@@ -1,5 +1,6 @@
 class Api::V1::MessagesController < Api::V1::BaseController
   before_action :authenticate_user!, only: [:create, :like]
+  before_action :set_message, only: [:like]
 
   def index
     @messages = Message.all
@@ -20,5 +21,9 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
   def message_params
     params.require(:message).permit(:content)
+  end
+
+  def set_message
+    @message = Message.find(params[:id])
   end
 end
