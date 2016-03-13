@@ -1,0 +1,15 @@
+table.table
+  caption = t('.table_caption')
+  thead
+    th = User.model_name.human
+    th = Message.model_name.human(count: 5)
+  tbody
+    - @users.each do |user|
+      tr
+        td = user.email
+        td = user.messages_count
+
+.pull-right
+  = bootstrap_form_tag(url: statistics_path, method: :patch, layout: :inline) do |f|
+    = f.select 'time_interval', options_for_select(@time_intervals, selected: @selected_interval), label: t('.show_for_interval')
+    = f.submit t('.update')
