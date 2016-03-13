@@ -38,6 +38,7 @@ gem 'omniauth' # required for devise_token_auth
 gem 'bootstrap-sass'
 gem 'bootstrap_form'
 gem 'rails-i18n'
+gem 'responders'
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -58,3 +59,6 @@ group :development do
   gem 'rubocop', require: false
 end
 
+group :test do
+  gem 'shoulda-matchers', '~> 3.1'
+end

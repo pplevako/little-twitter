@@ -3,12 +3,12 @@ class Api::V1::MessagesController < Api::V1::BaseController
 
   def index
     @messages = Message.all
-    render json: @messages
+    respond_with @messages
   end
 
   def create
     @message = current_user.messages.create(message_params)
-    render json: @message
+    respond_with :api, :v1, @message
   end
 
   def like
