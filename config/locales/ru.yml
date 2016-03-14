@@ -7,12 +7,19 @@ ru:
       message:
         one: Сообщение
         many: Сообщения
+      like:
+        one: Голос
+        many: Голоса
+    attributes:
+      like:
+        content: Текст сообщения
 
   statistics:
     show:
-      table_caption: Топ-5 пользователей, которые написали больше всех сообщений
+      table_caption_messages: Топ-5 пользователей, которые написали больше всех сообщений
+      table_caption_likes: Топ-5 пользователей, которые написали сообщения, набравшие наибольшее количество голосов и сами эти сообщения.
       update: Обновить
-      show_for_interval: Показать за
-      all_time: всё время
-      day: день
-      week: неделю
+      show_for_interval: Показать
+      all_time: за всё время
+      day: за сутки
+      week: за неделю
