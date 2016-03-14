@@ -7,7 +7,7 @@ class User < ActiveRecord::Base
 
   has_many :messages, dependent: :destroy
 
-  def self.by_messages_count(time)
+  def self.by_messages_count(time='all')
     users = User.select('users.*, COUNT(messages.id) AS messages_count')
                 .joins(:messages)
                 .group('users.id')
@@ -19,7 +19,7 @@ class User < ActiveRecord::Base
     return users
   end
 
-  def self.by_likes_count(time)
+  def self.by_likes_count(time='all')
     users = User.select('users.*, MAX(messages.likes_count) AS max_likes_count')
                 .joins(:messages)
                 .group('users.id')
@@ -30,7 +30,7 @@ class User < ActiveRecord::Base
     return users
   end
 
-  def self.by_likes_rating(time)
+  def self.by_likes_rating(time='all')
     users = User.select('users.*, AVG(messages.likes_count) AS likes_rating')
                 .joins(:messages)
                 .group('users.id')
