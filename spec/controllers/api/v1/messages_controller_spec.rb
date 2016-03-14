@@ -19,7 +19,7 @@ RSpec.describe Api::V1::MessagesController, type: :controller do
 
     context 'invalid attributes' do
       before do
-        post :create, message: {content: Forgery::LoremIpsum.characters(150)}
+        post :create, message: { content: Forgery::LoremIpsum.characters(150) }
       end
       it { is_expected.to respond_with(:unprocessable_entity) }
     end
@@ -32,10 +32,10 @@ RSpec.describe Api::V1::MessagesController, type: :controller do
         expect { post_request }.to change(Message, :count).by(1)
       end
 
-      it {
+      it 'responds with 201 status' do
         post_request
         is_expected.to respond_with(201)
-      }
+      end
     end
   end
 
@@ -49,6 +49,6 @@ RSpec.describe Api::V1::MessagesController, type: :controller do
     it 'adds like to a message' do
       expect { patch :like, id: message.id }.to change { message.reload.likes_count }.from(0).to(1)
     end
-    # TODO test json contents
+    # TODO: test json contents
   end
 end

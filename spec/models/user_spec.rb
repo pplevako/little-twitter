@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
       expect(users.first.messages_count).to eq(2)
       expect(users.second.messages_count).to eq(1)
     end
-    # TODO add time parameter specs
+    # TODO: add time parameter specs
   end
 
   describe '.by_likes_count' do
@@ -48,7 +48,6 @@ RSpec.describe User, type: :model do
       expect(users.second.max_likes_count).to eq(1)
     end
   end
-
 
   describe '.by_likes_rating' do
     let(:users) { User.by_likes_rating }
