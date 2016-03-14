@@ -12,5 +12,5 @@ RSpec.describe Api::V1::BaseController, type: :controller do
   end
 
   it { is_expected.to respond_with(:not_found) }
-  # TODO check json contents
+  # TODO: check json contents
 end
