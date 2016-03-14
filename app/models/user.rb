@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
                 .group('users.id')
                 .order('messages_count DESC')
 
+    # TODO refactor this repeating code
     users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
     users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
     return users
@@ -23,6 +24,18 @@ class User < ActiveRecord::Base
                 .joins(:messages)
                 .group('users.id')
                 .order('max_likes_count DESC')
+
+    users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
+    users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
+    return users
+  end
+
+  def self.by_likes_rating(time)
+    users = User.select('users.*, AVG(messages.likes_count) AS likes_rating')
+                .joins(:messages)
+                .group('users.id')
+                .having('AVG(messages.likes_count) > 0')
+                .order('likes_rating DESC')
 
     users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
     users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
