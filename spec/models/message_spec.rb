@@ -11,4 +11,6 @@ RSpec.describe Message, type: :model do
   end
 
   it { is_expected.to validate_presence_of(:content) }
+
+  it { is_expected.to validate_presence_of(:user) }
 end
