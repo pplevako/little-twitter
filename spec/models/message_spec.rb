@@ -9,4 +9,6 @@ RSpec.describe Message, type: :model do
       expect { message.like!(user) }.to change { message.reload.likes_count }.from(0).to(1)
     end
   end
+
+  it { is_expected.to validate_presence_of(:content) }
 end
