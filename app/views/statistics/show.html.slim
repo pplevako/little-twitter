@@ -35,5 +35,5 @@ table.table
 
 .pull-right
   = bootstrap_form_tag(url: statistics_path, method: :get, layout: :inline) do |f|
-    = f.select 'time', options_for_select([[t('.all_time'), :all], [t('.week'), :week], [t('.day'), :day]], selected: params[:time]), label: t('.show_for_interval')
+    = f.select 'by_messages_period', options_for_select([[t('.all_time'), :all], [t('.week'), :week], [t('.day'), :day]], selected: params[:by_messages_period]), label: t('.show_for_interval')
     = f.submit t('.update'), name: nil

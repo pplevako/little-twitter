@@ -7,38 +7,36 @@ class User < ActiveRecord::Base
 
   has_many :messages, dependent: :destroy
 
-  def self.by_messages_count(time = 'all')
-    users = User.select('users.*, COUNT(messages.id) AS messages_count')
-                .joins(:messages)
-                .group('users.id')
-                .order('messages_count DESC')
-
-    # TODO: refactor this repeating code
-    users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
-    users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
-    users
+  def self.by_messages_period(period)
+    case period
+    when 'day'
+      joins(:messages).where('messages.created_at > ?', 1.day.ago)
+    when 'week'
+      joins(:messages).where('messages.created_at > ?', 1.week.ago)
+    else
+      all
+    end
   end
 
-  def self.by_likes_count(time = 'all')
-    users = User.select('users.*, MAX(messages.likes_count) AS max_likes_count')
-                .joins(:messages)
-                .group('users.id')
-                .order('max_likes_count DESC')
-
-    users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
-    users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
-    users
+  def self.by_messages_count
+    select('users.*, COUNT(messages.id) AS messages_count')
+      .joins(:messages)
+      .group('users.id')
+      .order('messages_count DESC')
   end
 
-  def self.by_likes_rating(time = 'all')
-    users = User.select('users.*, AVG(messages.likes_count) AS likes_rating')
-                .joins(:messages)
-                .group('users.id')
-                .having('AVG(messages.likes_count) > 0')
-                .order('likes_rating DESC')
+  def self.by_likes_count
+    select('users.*, MAX(messages.likes_count) AS max_likes_count')
+      .joins(:messages)
+      .group('users.id')
+      .order('max_likes_count DESC')
+  end
 
-    users = users.where('messages.created_at > ?', 1.day.ago) if time == 'day'
-    users = users.where('messages.created_at > ?', 1.week.ago) if time == 'week'
-    users
+  def self.by_likes_rating
+    select('users.*, AVG(messages.likes_count) AS likes_rating')
+      .joins(:messages)
+      .group('users.id')
+      .having('AVG(messages.likes_count) > 0')
+      .order('likes_rating DESC')
   end
 end
