@@ -8,7 +8,7 @@ RSpec.describe StatisticsController, type: :controller do
       FactoryGirl.create(:message, user: @user1)
       FactoryGirl.create(:message, user: @user2, created_at: 2.days.ago)
 
-      get :show, time: 'day'
+      get :show, by_messages_period: 'day'
       expect(assigns(:users_by_messages)).to eq([@user1])
     end
   end

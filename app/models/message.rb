@@ -5,6 +5,8 @@ class Message < ActiveRecord::Base
   validates :content, length: { maximum: 140 }, presence: true
   validates :user, presence: true
 
+  scope :by_users, -> (users) { where(user_id: users.map(&:id)) }
+
   def like!(user)
     likes.create(user: user)
   end
