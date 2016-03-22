@@ -32,6 +32,20 @@ RSpec.describe Api::V1::MessagesController, type: :controller do
         expect { post_request }.to change(Message, :count).by(1)
       end
 
+      it 'assigns attributes to a message' do
+        post_request
+
+        created_message = Message.last
+        expect(created_message.content).to eql(message_attributes[:content])
+      end
+
+      it 'assigns user to a message' do
+        post_request
+
+        created_message = Message.last
+        expect(created_message.user).to eql(user)
+      end
+
       it 'responds with 201 status' do
         post_request
         is_expected.to respond_with(201)
