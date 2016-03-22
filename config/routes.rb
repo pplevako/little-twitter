@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  resource :statistics, only: [:show, :update]
+  resource :statistics, only: [:show]
 
   namespace :api do
     namespace :v1 do

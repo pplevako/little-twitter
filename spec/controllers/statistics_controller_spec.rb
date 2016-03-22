@@ -12,11 +12,4 @@ RSpec.describe StatisticsController, type: :controller do
       expect(assigns(:users_by_messages)).to eq([@user1])
     end
   end
-
-  describe 'PATCH update' do
-    it 'redirects to statistics url' do
-      patch :update, time: 'week'
-      is_expected.to redirect_to(statistics_url(time: 'week'))
-    end
-  end
 end
