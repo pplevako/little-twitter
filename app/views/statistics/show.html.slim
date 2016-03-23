@@ -1,0 +1,39 @@
+table.table
+  caption = t('.table_caption_messages')
+  thead
+    th = User.model_name.human
+    th = Message.model_name.human(count: 5)
+  tbody
+    - @users_by_messages.each do |user|
+      tr
+        td = user.email
+        td = user.messages_count
+
+table.table
+  caption = t('.table_caption_likes')
+  thead
+    th = User.model_name.human
+    th = Like.model_name.human(count: 5)
+    th = Like.human_attribute_name(:content)
+  tbody
+    - @users_by_likes.each_with_index do |user, index|
+      tr
+        td = user.email
+        td = @messages_by_likes[index].likes_count
+        td = truncate(@messages_by_likes[index].content)
+
+table.table
+  caption = t('.table_caption_rating')
+  thead
+    th = User.model_name.human
+    th = t('.likes_rating')
+  tbody
+    - @users_by_likes_rating.each_with_index do |user|
+      tr
+        td = user.email
+        td = user.likes_rating
+
+.pull-right
+  = bootstrap_form_tag(url: statistics_path, method: :get, layout: :inline) do |f|
+    = f.select 'by_messages_period', options_for_select([[t('.all_time'), :all], [t('.week'), :week], [t('.day'), :day]], selected: params[:by_messages_period]), label: t('.show_for_interval')
+    = f.submit t('.update'), name: nil
