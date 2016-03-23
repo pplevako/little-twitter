@@ -7,12 +7,14 @@ class User < ActiveRecord::Base
 
   has_many :messages, dependent: :destroy
 
+  scope :by_messages_created_after, -> (datetime) { joins(:messages).where('messages.created_at > ?', datetime) }
+
   def self.by_messages_period(period)
     case period
     when 'day'
-      joins(:messages).where('messages.created_at > ?', 1.day.ago)
+      by_messages_created_after(1.day.ago)
     when 'week'
-      joins(:messages).where('messages.created_at > ?', 1.week.ago)
+      by_messages_created_after(1.week.ago)
     else
       all
     end

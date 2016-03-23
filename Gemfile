@@ -47,6 +47,7 @@ group :development, :test do
   gem 'rspec-rails'
   gem 'forgery'
   gem 'factory_girl_rails'
+  gem 'timecop'
 end
 
 group :development do

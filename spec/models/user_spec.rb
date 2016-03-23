@@ -1,46 +1,94 @@
 require 'rails_helper'
 
 RSpec.describe User, type: :model do
+  describe '.by_messages_period' do
+    before do
+      Timecop.freeze(Time.current)
+    end
+
+    after do
+      Timecop.return
+    end
+
+    context "when a period parameter equals 'week'" do
+      it 'includes users with messages newer than week' do
+        @message = FactoryGirl.create(:message, created_at: 7.days.ago + 10.minutes)
+
+        expect(User.by_messages_period('week')).to include(@message.user)
+      end
+
+      it 'excludes users with messages created more than a week ago' do
+        @message = FactoryGirl.create(:message, created_at: 7.days.ago - 10.minutes)
+
+        expect(User.by_messages_period('week')).to_not include(@message.user)
+      end
+    end
+
+    context "when a period parameter equals 'day'" do
+      it 'includes users with messages newer than day' do
+        @message = FactoryGirl.create(:message, created_at: 1.day.ago + 10.minutes)
+
+        expect(User.by_messages_period('day')).to include(@message.user)
+      end
+
+      it 'excludes users with messages created more than a day ago' do
+        @message = FactoryGirl.create(:message, created_at: 1.day.ago - 10.minutes)
+
+        expect(User.by_messages_period('day')).to_not include(@message.user)
+      end
+    end
+
+    context 'when a period not specified' do
+      it 'includes all users' do
+        @old_message = FactoryGirl.create(:message, created_at: 100.days.ago)
+        @recent_message = FactoryGirl.create(:message)
+
+        expect(User.by_messages_period(nil)).to include(@old_message.user, @recent_message.user)
+      end
+    end
+
+    # etc.
+  end
+
   describe '.by_messages_count' do
     let(:users) { User.by_messages_count }
 
     before do
-      @user1 = FactoryGirl.create(:user)
-      @user2 = FactoryGirl.create(:user)
+      @top_user = FactoryGirl.create(:user)
+      @second_user = FactoryGirl.create(:user)
       FactoryGirl.create(:user)
-      FactoryGirl.create(:message, user: @user1)
-      FactoryGirl.create(:message, user: @user2)
-      FactoryGirl.create(:message, user: @user2)
+      FactoryGirl.create(:message, user: @top_user)
+      FactoryGirl.create(:message, user: @top_user)
+      FactoryGirl.create(:message, user: @second_user)
       @users = User.by_messages_count
     end
 
     it 'sorts users by messages count' do
-      expect(users).to eq([@user2, @user1])
+      expect(users).to eq([@top_user, @second_user])
     end
 
     it 'adds messages_count to users' do
       expect(users.first.messages_count).to eq(2)
       expect(users.second.messages_count).to eq(1)
     end
-    # TODO: add time parameter specs
   end
 
   describe '.by_likes_count' do
     let(:users) { User.by_likes_count }
 
     before do
-      @user1 = FactoryGirl.create(:user)
-      @user2 = FactoryGirl.create(:user)
+      @top_user = FactoryGirl.create(:user)
+      @second_user = FactoryGirl.create(:user)
       FactoryGirl.create(:user)
-      message1 = FactoryGirl.create(:message, user: @user1)
-      message2 = FactoryGirl.create(:message, user: @user2)
-      FactoryGirl.create(:like, likeable: message1)
-      FactoryGirl.create(:like, likeable: message1)
-      FactoryGirl.create(:like, likeable: message2)
+      top_message = FactoryGirl.create(:message, user: @top_user)
+      second_message = FactoryGirl.create(:message, user: @second_user)
+      FactoryGirl.create(:like, likeable: top_message)
+      FactoryGirl.create(:like, likeable: top_message)
+      FactoryGirl.create(:like, likeable: second_message)
     end
 
     it 'sorts users by likes count' do
-      expect(users).to eq([@user1, @user2])
+      expect(users).to eq([@top_user, @second_user])
     end
 
     it 'adds max_likes_count to users' do
@@ -53,18 +101,18 @@ RSpec.describe User, type: :model do
     let(:users) { User.by_likes_rating }
 
     before do
-      @user1 = FactoryGirl.create(:user)
-      @user2 = FactoryGirl.create(:user)
+      @top_user = FactoryGirl.create(:user)
+      @second_user = FactoryGirl.create(:user)
       FactoryGirl.create(:user)
-      message1 = FactoryGirl.create(:message, user: @user1)
-      message2 = FactoryGirl.create(:message, user: @user2)
-      FactoryGirl.create(:message, user: @user2)
-      FactoryGirl.create(:like, likeable: message1)
-      FactoryGirl.create(:like, likeable: message2)
+      top_message = FactoryGirl.create(:message, user: @top_user)
+      second_message = FactoryGirl.create(:message, user: @second_user)
+      FactoryGirl.create(:message, user: @second_user)
+      FactoryGirl.create(:like, likeable: top_message)
+      FactoryGirl.create(:like, likeable: second_message)
     end
 
     it 'sorts users by likes count' do
-      expect(users).to eq([@user1, @user2])
+      expect(users).to eq([@top_user, @second_user])
     end
 
     it 'adds max_likes_count to users' do
